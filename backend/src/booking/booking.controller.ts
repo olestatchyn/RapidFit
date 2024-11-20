@@ -1,42 +1,56 @@
-import { Controller, Get, Post, Patch, Delete, Param, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Param, Body, UseGuards, Req } from '@nestjs/common';
 import { BookingService } from './booking.service';
-import { CreateBookingDto } from './dto/create-booking.dto';
+import { CreateBookingDto, CreateBookingDtoFull } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
-import { AuthGuard } from '../auth/guards/auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('booking')
 export class BookingController {
   constructor(private readonly bookingService: BookingService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async getAllBookings() {
     return this.bookingService.findAll();
   }
 
   @Get('userId')
-  @UseGuards(AuthGuard)
-  async getBookingsByUserId(@Body('userId') userId: string) {
-    return this.bookingService.findByUserId(userId);
+  @UseGuards(JwtAuthGuard)
+  async getBookingsByUserId(@Req() req: any) {
+    const { _id } = req.user;
+    return this.bookingService.findByUserId(_id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':trainerId')
   async getBookingsByTrainerId(@Param('trainerId') trainerId: string) {
     return this.bookingService.findByTrainerId(trainerId);
   }
 
-  @Post('create')
-  @UseGuards(AuthGuard)
-  async createBooking(@Body() createBookingDto: CreateBookingDto) {
-    return this.bookingService.create(createBookingDto);
+  @UseGuards(JwtAuthGuard)
+  @Post()
+  @UseGuards(JwtAuthGuard)
+  async createBooking(@Req() req: any, @Body() createBookingDto: CreateBookingDto) {
+    const { id: userId, email } = req.user;
+
+    const bookingData: CreateBookingDtoFull = {
+      ...createBookingDto,
+      userId,
+      userEmail: email,
+    };
+
+    return this.bookingService.create(bookingData);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch('edit/:id')
   async updateBooking(@Param('id') id: string, @Body() updateBookingDto: UpdateBookingDto) {
     return this.bookingService.update(id, updateBookingDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete('remove/:id')
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   async deleteBooking(@Param('id') id: string) {
     return this.bookingService.delete(id);
   }

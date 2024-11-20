@@ -1,9 +1,3 @@
-// import * as dotenv from 'dotenv';
-
-// dotenv.config();
-
-// const baseUrl = process.env.BASE_URL;
-
 const baseUrl = 'http://localhost:5000';
 
 const cont = document.getElementById("display_appointment");
@@ -23,10 +17,9 @@ async function getAllAppointments() {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `${token}`
+        Authorization: `Bearer ${token}`
       },
     });
-
     const result = await response.json();
 
     if (response.ok) {
@@ -92,7 +85,7 @@ async function removeAppointment(id, token) {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `${token}`
+        Authorization: `Bearer ${token}`
       },
     });
 

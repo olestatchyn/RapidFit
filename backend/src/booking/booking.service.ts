@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { BookingRepository } from './booking.repository';
-import { CreateBookingDto } from './dto/create-booking.dto';
+import { CreateBookingDto, CreateBookingDtoFull } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import * as nodemailer from 'nodemailer';
 
@@ -20,7 +20,7 @@ export class BookingService {
     return this.bookingRepository.findByTrainerId(trainerId);
   }
 
-  async create(data: CreateBookingDto) {
+  async create(data: CreateBookingDtoFull) {
     const existingBookings = await this.bookingRepository.findByTrainerId(data.trainerId);
 
     if (existingBookings.some(
@@ -44,7 +44,7 @@ export class BookingService {
     return this.bookingRepository.delete(id);
   }
 
-  private async sendConfirmationEmail(data: CreateBookingDto) {
+  private async sendConfirmationEmail(data: CreateBookingDtoFull) {
     const transporter = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: parseInt(process.env.EMAIL_PORT),

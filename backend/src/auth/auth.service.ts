@@ -31,4 +31,8 @@ export class AuthService {
   async getAllUsers(): Promise<User[]> {
     return this.userRepository.getAllUsers();
   }
+
+  async findByEmail(email: string): Promise<User> {
+    return this.userRepository.findByEmail(email);
+  }
 }

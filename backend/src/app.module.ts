@@ -1,9 +1,11 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { TrainerModule } from './trainer/trainer.module';
 import { BookingModule } from './booking/booking.module';
+import { CommentsModule } from './comments/comments.module';
 import * as dotenv from 'dotenv';
+import { LoggerMiddleware } from './middlewares/logger.middleware';
 
 dotenv.config();
 
@@ -13,6 +15,11 @@ dotenv.config();
     AuthModule,
     TrainerModule,
     BookingModule,
+    CommentsModule,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}

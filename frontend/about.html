@@ -159,7 +159,6 @@
 
     <div style="margin: 5% 5% 5% 5%" id="our-team-section">
         <div class="our-team-head">
-            <h4 style="color: greenyellow;font-size: 25px;">Our Team</h4><br>
             <h1 style="color:white;font-size: 40px;text-align: center;">Your fitness journey, customized by our
                 trainers.</h1>
         </div>
@@ -289,9 +288,20 @@
 
     </div>
 
+    <section class="comment-section">
+        <h2>Leave a Comment</h2>
+        <div id="userStatus" class="user-status">
+        </div>
+        <form class="comment-form" id="commentForm">
+            <textarea id="commentText" placeholder="Your Comment" required></textarea>
+            <button type="submit" class="submit-comment">Post Comment</button>
+        </form>
+
+        <div class="comments-list" id="commentsList">
+        </div>
+    </section>
+
     <!---------------------------------------------------------------- footer ---------------------------------------------------->
-
-
 
     <section class="footer">
 
@@ -350,6 +360,7 @@
 
 
 <script src="./script/index.js"></script>
+<script src="script/about.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
