@@ -22,7 +22,12 @@ export class Trainer extends Document {
   specialization: string[];
 
   @Prop([{ id: Number, startTime: Number, endTime: Number, isBooked: Boolean }])
-  timeslot: { id: number; startTime: number; endTime: number; isBooked: boolean }[];
+  timeslot: {
+    id: number;
+    startTime: number;
+    endTime: number;
+    isBooked: boolean;
+  }[];
 }
 
 export const TrainerSchema = SchemaFactory.createForClass(Trainer);

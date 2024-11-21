@@ -24,7 +24,7 @@ export class CommentRepository {
 
   async create(
     createCommentDto: CreateCommentDto,
-    user: { userId: string; email: string; name: string }
+    user: { userId: string; email: string; name: string },
   ): Promise<Comment> {
     const { userId, email, name } = user;
     const newComment = new this.commentModel({

@@ -41,11 +41,11 @@ function displayAllAppointments(appointments, name, token) {
     <table>
       <thead>
         <tr>
-          <th>SI NO.</th>
-          <th>User Email</th>
+          <th>№</th>
+          <th>User's email</th>
           <th>Date</th>
-          <th>Time Slot</th>
-          <th>Cancel Appointment</th>
+          <th>Time slot</th>
+          <th>Cancel appointment</th>
         </tr>
       </thead>
       <tbody>

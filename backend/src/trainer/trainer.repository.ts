@@ -7,7 +7,9 @@ import { UpdateTrainerDto } from './dto/update-trainer.dto';
 
 @Injectable()
 export class TrainerRepository {
-  constructor(@InjectModel(Trainer.name) private trainerModel: Model<Trainer>) {}
+  constructor(
+    @InjectModel(Trainer.name) private trainerModel: Model<Trainer>,
+  ) {}
 
   async findAll(): Promise<Trainer[]> {
     return this.trainerModel.find().exec();
@@ -28,8 +30,13 @@ export class TrainerRepository {
     return trainer.save();
   }
 
-  async update(id: string, updateTrainerDto: UpdateTrainerDto): Promise<Trainer> {
-    return this.trainerModel.findByIdAndUpdate(id, updateTrainerDto, { new: true }).exec();
+  async update(
+    id: string,
+    updateTrainerDto: UpdateTrainerDto,
+  ): Promise<Trainer> {
+    return this.trainerModel
+      .findByIdAndUpdate(id, updateTrainerDto, { new: true })
+      .exec();
   }
 
   async updateTimeSlot(id: string, timeId: number): Promise<Trainer> {

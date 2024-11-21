@@ -1,54 +1,52 @@
-// import * as dotenv from 'dotenv';
-
-// dotenv.config();
-
-// const baseUrl = process.env.BASE_URL;
-
 const baseUrl = 'http://localhost:5000';
+const boxContainer = document.querySelector("#trainers .box-container");
 
-let boxContainer=document.querySelector("#trainers .box-container")
-
-async function getTrainerData(){
+async function getTrainerData() {
   try {
-    let res= await fetch(`${baseUrl}/trainer`)
-    let data =await res.json()
-    displayTrainerData(data)
-    
+    const response = await fetch(`${baseUrl}/trainer`);
+    if (!response.ok) {
+      throw new Error(`Error fetching trainers: ${response.status}`);
+    }
+
+    const trainers = await response.json();
+    displayTrainerData(trainers);
   } catch (error) {
-      console.log(error)
+    console.error('Error fetching trainer data:', error);
+    boxContainer.innerHTML = '<p>Failed to load trainers. Please try again later.</p>';
   }
 }
-getTrainerData()
 
-function  displayTrainerData(data){
-  boxContainer.innerHTML=""
-  boxContainer.innerHTML=`
-    
-  ${ data.map((elem)=>{
-    return `
-    <div class="box">
-        <img src=${elem.image} alt="">
-        <div class="content">
-            <span>expert trainer</span>
-            <h3>${elem.name}</h3>
-            <a href="./appointment.html" class="btn" data-id=${elem._id}>Book Appointment</a>
-            <div class="share">
-                <a href="#" class="fab fa-facebook-f"></a>
-                <a href="#" class="fab fa-twitter"></a>
-                <a href="#" class="fab fa-pinterest"></a>
-                <a href="#" class="fab fa-linkedin"></a>
+function displayTrainerData(trainers) {
+  boxContainer.innerHTML = "";
+
+  trainers.forEach((trainer) => {
+    const trainerHTML = `
+            <div class="box">
+                <img src="${trainer.image}" alt="${trainer.name}">
+                <div class="content">
+                    <span>Expert trainer</span>
+                    <h3>${trainer.name}</h3>
+                    <a href="./appointment.html" class="btn" data-id="${trainer._id}">Book Appointment</a>
+                    <div class="share">
+                        <a href="#" class="fab fa-facebook-f"></a>
+                        <a href="#" class="fab fa-twitter"></a>
+                        <a href="#" class="fab fa-pinterest"></a>
+                        <a href="#" class="fab fa-linkedin"></a>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-  `
-  }).join("")}`
+        `;
 
-  let appointmentBtns=document.querySelectorAll(".btn")
-  
-  for(let appointmentBtn of appointmentBtns){
-    appointmentBtn.addEventListener("click",(e)=>{
-      let id=e.target.dataset.id
-      sessionStorage.setItem("trainerId",id)
+    boxContainer.insertAdjacentHTML('beforeend', trainerHTML);
+  });
+
+  const appointmentBtns = document.querySelectorAll(".btn");
+  appointmentBtns.forEach((btn) =>
+    btn.addEventListener("click", (e) => {
+      const trainerId = e.target.dataset.id;
+      sessionStorage.setItem("trainerId", trainerId);
     })
-  }
+  );
 }
+
+getTrainerData();

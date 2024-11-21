@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Delete, Body, Param, NotFoundException, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Delete,
+  Body,
+  Param,
+  NotFoundException,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { Comment } from './schemas/comment.schema';
@@ -8,14 +18,14 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
-  @Get()
   @UseGuards(JwtAuthGuard)
+  @Get()
   async getAllComments(): Promise<Comment[]> {
     return this.commentsService.getAllComments();
   }
 
-  @Get(':id')
   @UseGuards(JwtAuthGuard)
+  @Get(':id')
   async getCommentById(@Param('id') id: string): Promise<Comment> {
     try {
       return await this.commentsService.getCommentById(id);
@@ -24,18 +34,22 @@ export class CommentsController {
     }
   }
 
-  @Post()
   @UseGuards(JwtAuthGuard)
+  @Post()
   async createComment(
     @Req() req: any,
-    @Body() createCommentDto: CreateCommentDto
+    @Body() createCommentDto: CreateCommentDto,
   ): Promise<Comment> {
     const { id: userId, email, name } = req.user;
-    return this.commentsService.createComment(createCommentDto, { userId, email, name });
+    return this.commentsService.createComment(createCommentDto, {
+      userId,
+      email,
+      name,
+    });
   }
 
-  @Delete(':id')
   @UseGuards(JwtAuthGuard)
+  @Delete(':id')
   async deleteComment(@Param('id') id: string): Promise<void> {
     try {
       await this.commentsService.deleteComment(id);

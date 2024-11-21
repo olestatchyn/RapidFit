@@ -6,7 +6,9 @@ import { Trainer, TrainerSchema } from './schemas/trainer.schema';
 import { TrainerRepository } from './trainer.repository';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: Trainer.name, schema: TrainerSchema }])],
+  imports: [
+    MongooseModule.forFeature([{ name: Trainer.name, schema: TrainerSchema }]),
+  ],
   controllers: [TrainerController],
   providers: [TrainerService, TrainerRepository],
 })

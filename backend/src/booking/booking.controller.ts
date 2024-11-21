@@ -1,6 +1,19 @@
-import { Controller, Get, Post, Patch, Delete, Param, Body, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Delete,
+  Param,
+  Body,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { BookingService } from './booking.service';
-import { CreateBookingDto, CreateBookingDtoFull } from './dto/create-booking.dto';
+import {
+  CreateBookingDto,
+  CreateBookingDtoFull,
+} from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
@@ -14,8 +27,8 @@ export class BookingController {
     return this.bookingService.findAll();
   }
 
-  @Get('userId')
   @UseGuards(JwtAuthGuard)
+  @Get('userId')
   async getBookingsByUserId(@Req() req: any) {
     const { _id } = req.user;
     return this.bookingService.findByUserId(_id);
@@ -29,8 +42,10 @@ export class BookingController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  @UseGuards(JwtAuthGuard)
-  async createBooking(@Req() req: any, @Body() createBookingDto: CreateBookingDto) {
+  async createBooking(
+    @Req() req: any,
+    @Body() createBookingDto: CreateBookingDto,
+  ) {
     const { id: userId, email } = req.user;
 
     const bookingData: CreateBookingDtoFull = {
@@ -44,13 +59,15 @@ export class BookingController {
 
   @UseGuards(JwtAuthGuard)
   @Patch('edit/:id')
-  async updateBooking(@Param('id') id: string, @Body() updateBookingDto: UpdateBookingDto) {
+  async updateBooking(
+    @Param('id') id: string,
+    @Body() updateBookingDto: UpdateBookingDto,
+  ) {
     return this.bookingService.update(id, updateBookingDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete('remove/:id')
-  @UseGuards(JwtAuthGuard)
   async deleteBooking(@Param('id') id: string) {
     return this.bookingService.delete(id);
   }

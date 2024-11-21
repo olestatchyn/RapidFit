@@ -1,6 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { BookingRepository } from './booking.repository';
-import { CreateBookingDto, CreateBookingDtoFull } from './dto/create-booking.dto';
+import {
+  CreateBookingDto,
+  CreateBookingDtoFull,
+} from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import * as nodemailer from 'nodemailer';
 
@@ -21,12 +24,21 @@ export class BookingService {
   }
 
   async create(data: CreateBookingDtoFull) {
-    const existingBookings = await this.bookingRepository.findByTrainerId(data.trainerId);
+    const existingBookings = await this.bookingRepository.findByTrainerId(
+      data.trainerId,
+    );
 
-    if (existingBookings.some(
-      booking => booking.bookingDate === data.bookingDate && booking.bookingSlot === data.bookingSlot
-    )) {
-      throw new HttpException('This slot is not available', HttpStatus.CONFLICT);
+    if (
+      existingBookings.some(
+        (booking) =>
+          booking.bookingDate === data.bookingDate &&
+          booking.bookingSlot === data.bookingSlot,
+      )
+    ) {
+      throw new HttpException(
+        'This slot is not available',
+        HttpStatus.CONFLICT,
+      );
     }
 
     const booking = await this.bookingRepository.create(data);

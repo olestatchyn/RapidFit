@@ -6,7 +6,7 @@ import { HttpExceptionFilter } from './errors/http-exception.filter';
 
 async function bootstrap() {
   dotenv.config();
-  
+
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({

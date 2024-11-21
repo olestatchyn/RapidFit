@@ -6,6 +6,7 @@ import { BookingModule } from './booking/booking.module';
 import { CommentsModule } from './comments/comments.module';
 import * as dotenv from 'dotenv';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
+import { UsersModule } from './users/users.module';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ dotenv.config();
     TrainerModule,
     BookingModule,
     CommentsModule,
+    UsersModule,
   ],
 })
 export class AppModule {

@@ -7,7 +7,9 @@ import { UpdateBookingDto } from './dto/update-booking.dto';
 
 @Injectable()
 export class BookingRepository {
-  constructor(@InjectModel(Booking.name) private bookingModel: Model<Booking>) {}
+  constructor(
+    @InjectModel(Booking.name) private bookingModel: Model<Booking>,
+  ) {}
 
   async findAll(): Promise<Booking[]> {
     return this.bookingModel.find().exec();

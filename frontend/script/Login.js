@@ -89,12 +89,30 @@ async function loginUser(credentials) {
     const result = await response.json();
 
     if (response.ok && result.message === 'Login successful') {
-      sessionStorage.setItem('token', result.token);
-      sessionStorage.setItem('name', credentials.email);
+      const token = result.token;
 
-      console.log(credentials, result)
-      alert('You logged in successfully');
-      window.location.href = './index.html';
+      sessionStorage.setItem('token', token);
+
+      const userResponse = await fetch(`${baseUrl}/users/${credentials.email}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+      });
+
+      const userInfo = await userResponse.json();
+
+      if (userResponse.ok) {
+        sessionStorage.setItem('name', userInfo.name);
+
+        console.log(credentials, result, userInfo);
+        alert('You logged in successfully');
+        window.location.href = './index.html';
+      } else {
+        console.error('Failed to fetch user details:', userInfo);
+        alert('Failed to fetch user details');
+      }
     } else if (result.message === 'Invalid credentials') {
       alert('Wrong Credentials');
     } else {
@@ -105,3 +123,28 @@ async function loginUser(credentials) {
     alert('Something went wrong!');
   }
 }
+//     const userInfo = await fetch(`${baseUrl}/users/:${credentials.email}`, {
+//       method: 'GET',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         Authorization: `Bearer ${result.token}`
+//       },
+//     });
+//
+//     if (response.ok && result.message === 'Login successful') {
+//       sessionStorage.setItem('token', result.token);
+//       console.log(userInfo);
+//       sessionStorage.setItem('name', await userInfo.name);
+//
+//       alert('You logged in successfully');
+//       window.location.href = './index.html';
+//     } else if (result.message === 'Invalid credentials') {
+//       alert('Wrong Credentials');
+//     } else {
+//       alert(result.message);
+//     }
+//   } catch (error) {
+//     console.error('Error:', error);
+//     alert('Something went wrong!');
+//   }
+// }

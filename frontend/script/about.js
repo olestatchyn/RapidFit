@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const apiUrl = "http://localhost:5000/comments";
-  const email = sessionStorage.getItem("email");
+  const email = sessionStorage.getItem("name");
   const userStatusDiv = document.getElementById("userStatus");
   const commentForm = document.getElementById("commentForm");
   const commentsList = document.getElementById("commentsList");
